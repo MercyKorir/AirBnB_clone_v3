@@ -36,7 +36,8 @@ class DBStorage:
                                       format(HBNB_MYSQL_USER,
                                              HBNB_MYSQL_PWD,
                                              HBNB_MYSQL_HOST,
-                                             HBNB_MYSQL_DB), pool_pre_ping=True)
+                                             HBNB_MYSQL_DB),
+                                      pool_pre_ping=True)
         if HBNB_ENV == "test":
             Base.metadata.drop_all(self.__engine)
 
@@ -87,4 +88,5 @@ class DBStorage:
         if cls is not None:
             return self.__session.query(cls).count()
         else:
-            return sum(self.__session.query(cls).count() for cls in classes.values())
+            return sum(self.__session.query(cls).count()
+                       for cls in classes.values())

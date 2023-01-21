@@ -55,7 +55,7 @@ class FileStorage:
                 jo = json.load(f)
             for key in jo:
                 self.__objects[key] = classes[jo[key]["__class__"]](**jo[key])
-        except:
+        except self.CannotOpen:
             pass
 
     def delete(self, obj=None):
@@ -79,6 +79,7 @@ class FileStorage:
     def count(self, cls=None):
         """count number of objects matching given class"""
         if cls is not None:
-            return len([obj for obj in self.__objects.values() if isinstance(obj, cls)])
+            return len([obj for obj in self.__objects.values()
+                       if isinstance(obj, cls)])
         else:
             return len(self.__objects)
