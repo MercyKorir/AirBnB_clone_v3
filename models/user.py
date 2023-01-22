@@ -32,6 +32,7 @@ class User(BaseModel, Base):
         if password:
             kwargs["password"] = self.hash_password(password)
         super().__init__(*args, **kwargs)
+
     def hash_password(self, password):
         """Hash a password for storage"""
         return hashlib.md5(password.encode()).hexdigest()
