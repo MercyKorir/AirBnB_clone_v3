@@ -3,6 +3,13 @@
 from flask import jsonify, request
 from api.v1.views import app_views
 from models import storage
+from models.amenity import Amenity
+from models.base_model import BaseModel
+from models.city import City
+from models.place import Place
+from models.review import Review
+from models.state import State
+from models.user import User
 
 
 @app_views.route("/status", methods=['GET'])
@@ -13,9 +20,15 @@ def status():
 
 @app_views.route('/stats', methods=['GET'])
 def stats():
-    """
-    function to return the count of all class objects
-    """
-    if request.method == 'GET':
-        return jsonify({cls.__name__: storage.count(cls)
-                        for cls in storage.all().values()})
+    stats = {}
+    PLURALS = {
+            Amenity: "amenities",
+            City: "cities",
+            Place: "places",
+            Review: "reviews",
+            State: "states",
+            User: "users"
+            }
+    for key, value in PLURALS.items():
+        stats[value] = storage.count(key)
+    return jsonify(stats)
