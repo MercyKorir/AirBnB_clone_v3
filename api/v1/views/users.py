@@ -10,7 +10,7 @@ from models.user import User
 def get_users():
     users = storage.all(User)
     users = [user.to_dict() for user in users.values()]
-    return jsonify(users), 200
+    return jsonify(users)
 
 
 @app_views.route("/users/<user_id>", methods=["GET"])
@@ -18,7 +18,7 @@ def get_user(user_id):
     user = storage.get(User, user_id)
     if not user:
         return jsonify({"error": "Not found"}), 404
-    return jsonify(user.to_dict()), 200
+    return jsonify(user.to_dict())
 
 
 @app_views.route("/users/<user_id>", methods=["DELETE"])
