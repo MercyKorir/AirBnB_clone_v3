@@ -8,7 +8,7 @@ from api.v1.views import app_views
 
 @app_views.route('/states', methods=['GET'])
 def get_states():
-    states = storage.all(State)
+    states = storage.get(State)
     if not states:
         return jsonify({"error": "Not found"}), 404
     states = [state.to_dict() for state in states.values()]
@@ -18,7 +18,7 @@ def get_states():
 @app_views.route('/states/<state_id>', methods=['GET'])
 def get_state(state_id):
     state = storage.get(State, state_id)
-    if state is None:
+    if not state:
         return jsonify({'error': 'Not found'}), 404
     return jsonify(state.to_dict())
 
@@ -26,7 +26,7 @@ def get_state(state_id):
 @app_views.route('/states/<state_id>', methods=['DELETE'])
 def delete_state(state_id):
     state = storage.get(State, state_id)
-    if state is None:
+    if not state:
         return jsonify({'error': 'Not found'}), 404
     storage.delete(state)
     storage.save()
@@ -36,7 +36,7 @@ def delete_state(state_id):
 @app_views.route('/states', methods=['POST'])
 def create_state():
     data = request.get_json()
-    if data is None:
+    if not data:
         return jsonify({'error': 'Not a JSON'}), 400
     if 'name' not in data:
         return jsonify({'error': 'Missing name'}), 400
@@ -49,10 +49,10 @@ def create_state():
 @app_views.route('/states/<state_id>', methods=['PUT'])
 def update_state(state_id):
     state = storage.get(State, state_id)
-    if state is None:
+    if not state:
         return jsonify({'error': 'Not found'}), 404
     data = request.get_json()
-    if data is None:
+    if not data:
         return jsonify({'error': 'Not a JSON'}), 400
     for key, value in data.items():
         if key not in ['id', 'created_at', 'updated_at']:
