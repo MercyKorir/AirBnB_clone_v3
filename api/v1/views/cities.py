@@ -7,18 +7,12 @@ from flask import jsonify, request
 from api.v1.views import app_views
 
 
-@app_views.route("/cities", methods=["GET"])
-def get_all_cities():
-    cities = storage.all("City")
-    return jsonify([city.to_dict() for city in cities.values()]), 200
-
-
 @app_views.route("/cities/<city_id>", methods=["GET"])
 def get_city(city_id):
     city = storage.get(City, city_id)
     if not city:
         return jsonify({"error": "Not found"}), 404
-    return jsonify(city.to_dict()), 200
+    return jsonify(city.to_dict())
 
 
 @app_views.route("states/<state_id>/cities", methods=["GET"])
@@ -27,7 +21,7 @@ def get_cities_of_state(state_id):
     if state is None:
         return jsonify({"error": "Not found"}), 404
     cities = [city.to_dict() for city in state.cities]
-    return jsonify(cities), 200
+    return jsonify(cities)
 
 
 @app_views.route("/cities/<city_id>", methods=["DELETE"])
