@@ -1,4 +1,4 @@
 #!/usr/bin/python3
-from models.place import Place
+from models import storage
 
-print(dir(Place))
+print(dir(storage))
