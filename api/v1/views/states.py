@@ -8,7 +8,7 @@ from api.v1.views import app_views
 
 @app_views.route('/states', methods=['GET'])
 def get_states():
-    states = storage.get(State)
+    states = storage.all(State)
     if not states:
         return jsonify({"error": "Not found"}), 404
     states = [state.to_dict() for state in states.values()]
