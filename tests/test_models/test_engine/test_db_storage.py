@@ -86,3 +86,38 @@ class TestDBStorage(unittest.TestCase):
     @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
     def test_save(self):
         """Test that save properly saves objects to file.json"""
+
+    @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
+    def setUp(self):
+        """Instantiate a DBStorage object for testing"""
+        DBStorage.reload()
+
+    @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
+    def test_get(self):
+        """test the method get"""
+        test_amenity = Amenity(id='1', name='test')
+        DBStorage.new(test_amenity)
+        DBStorage.save()
+        retrieved_amenity = DBStorage.get(Amenity, '1')
+        self.assertEqual(retrieved_amenity.name, 'test')
+        retrieved_amenity = DBStorage.get(Amenity, '2')
+        self.assertIsNone(retrieved_amenity)
+
+    @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
+    def test_count(self):
+        """test the method count"""
+        test_amenity1 = Amenity(id='1', name='test1')
+        test_amenity2 = Amenity(id='2', name='test2')
+        test_place1 = Place(id='1', name='test1')
+        test_place2 = Place(id='2', name='test2')
+        DBStorage.new(test_amenity1)
+        DBStorage.new(test_amenity2)
+        DBStorage.new(test_place1)
+        DBStorage.new(test_place2)
+        DBStorage.save()
+        count = DBStorage.count()
+        self.assertEqual(count, 4)
+        count = DBStorage.count(Amenity)
+        self.assertEqual(count, 2)
+        count = DBStorage.count(Place)
+        self.assertEqual(count, 2)

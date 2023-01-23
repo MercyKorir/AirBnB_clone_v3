@@ -113,3 +113,34 @@ class TestFileStorage(unittest.TestCase):
         with open("file.json", "r") as f:
             js = f.read()
         self.assertEqual(json.loads(string), json.loads(js))
+
+    @unittest.skipIf(models.storage_t == 'db', "not testing file storage")
+    def test_get(self):
+        """Test the method get"""
+        self.storage = FileStorage()
+        test_amenity = Amenity(id='1', name='test')
+        self.storage.new(test_amenity)
+        self.storage.save()
+        retrieved_amenity = self.storage.get(Amenity, '1')
+        self.assertEqual(retrieved_amenity.name, 'test')
+        retrieved_amenity = self.storage.get(Amenity, '2')
+
+    @unittest.skipIf(models.storage_t == 'db', "not testing file storage")
+    def test_count(self):
+        """Test the method count"""
+        self.storage = FileStorage()
+        test_amenity1 = Amenity(id='1', name='test1')
+        test_amenity2 = Amenity(id='2', name='test2')
+        test_place1 = Place(id='1', name='test1')
+        test_place2 = Place(id='2', name='test2')
+        self.storage.new(test_amenity1)
+        self.storage.new(test_amenity2)
+        self.storage.new(test_place1)
+        self.storage.new(test_place2)
+        self.storage.save()
+        count = self.storage.count()
+        self.assertEqual(count, 11)
+        count = self.storage.count(Amenity)
+        self.assertEqual(count, 3)
+        count = self.storage.count(Place)
+        self.assertEqual(count, 3)
