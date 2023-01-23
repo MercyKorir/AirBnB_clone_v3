@@ -18,7 +18,7 @@ def get_amenity(amenity_id):
     amenity = storage.get(Amenity, amenity_id)
     if not amenity:
         return jsonify({"error": "Not found"}), 404
-    return jsonify(amenity.to_dict()), 200
+    return jsonify(amenity.to_dict())
 
 
 @app_views.route("/amenities/<amenity_id>", methods=["DELETE"])
