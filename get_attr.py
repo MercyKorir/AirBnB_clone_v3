@@ -1,4 +1,4 @@
 #!/usr/bin/python3
-from models.engine.db_storage import DBStorage
+from models.place import Place
 
-print(dir(DBStorage))
+print(dir(Place))

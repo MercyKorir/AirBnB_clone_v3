@@ -5,6 +5,8 @@ from flask import jsonify, request
 from api.v1.views import app_views
 from models.place import Place
 from models.amenity import Amenity
+from models.state import State
+from models.city import City
 
 
 @app_views.route("/places/<place_id>/amenities", methods=["GET"])
